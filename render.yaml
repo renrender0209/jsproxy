@@ -3,7 +3,7 @@ services:
     name: jsproxy
     env: static
     branch: gh-pages
-    buildCommand: ""
+    buildCommand: "cp assets/index_v3.html index.html"
     staticPublishPath: .
     headers:
       - path: /*
