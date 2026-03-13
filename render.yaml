@@ -3,7 +3,31 @@ services:
     name: jsproxy
     env: static
     branch: gh-pages
-    buildCommand: "cp assets/index_v3.html index.html"
+    buildCommand: |
+      cat > index.html << 'SWEOF'
+      <!DOCTYPE html>
+      <html>
+      <head>
+      <meta charset="utf-8">
+      <title>jsproxy</title>
+      </head>
+      <body>
+      <script>
+      navigator.serviceWorker.register('sw.js')
+        .then(function(reg) {
+          if (navigator.serviceWorker.controller) {
+            location.replace(location.href)
+          } else {
+            navigator.serviceWorker.addEventListener('controllerchange', function() {
+              location.replace(location.href)
+            })
+          }
+        })
+        .catch(console.error)
+      </script>
+      </body>
+      </html>
+      SWEOF
     staticPublishPath: .
     headers:
       - path: /*
